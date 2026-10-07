@@ -1,0 +1,11 @@
+{
+  "name": "codex-open-dot",
+  "productName": "Codex-open-dot",
+  "version": "0.2.0",
+  "description": "Personal AI agents customized by Mohammad Aqib, Full Stack Developer",
+  "main": "main.mjs",
+  "author": {
+    "name": "Mohammad Aqib"
+  },
+  "license": "SEE LICENSE IN LICENSE.md"
+}

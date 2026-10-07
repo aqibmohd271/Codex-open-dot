@@ -1,0 +1,7 @@
+allowBuilds:
+  electron: true
+  electron-winstaller: false
+  sharp: false
+  unrs-resolver: false
+minimumReleaseAgeExclude:
+  - '@composio/core@0.22.0'

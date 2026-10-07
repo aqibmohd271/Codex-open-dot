@@ -1,0 +1,18 @@
+services:
+  open-dot:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3100:3100"
+    environment:
+      DOTS_SERVER_MODE: "1"
+      DOTS_ADMIN_PASSWORD: "${DOTS_ADMIN_PASSWORD:?Set a strong initial administrator password}"
+      DOTS_PUBLIC_URL: "${DOTS_PUBLIC_URL:-http://localhost:3100}"
+      DOTS_WORKSPACE_ID: "${DOTS_WORKSPACE_ID:-personal}"
+    volumes:
+      - open-dot-data:/data
+    init: true
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  open-dot-data:

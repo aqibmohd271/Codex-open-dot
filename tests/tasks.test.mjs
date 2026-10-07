@@ -1,0 +1,25 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { mkdtempSync, rmSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
+const dir = mkdtempSync(path.join(os.tmpdir(), "dot-tasks-"));
+process.env.DOTS_DATA_DIR = dir;
+const tasks = await import("../src/server/tasks.ts");
+test("durable task recovery, waiting states and progress", () => {
+  const a = tasks.createTask("dot", "conversation", "Research");
+  tasks.startTask("dot", a);
+  tasks.progressTask("dot", "Read document");
+  assert.equal(tasks.getTask(a).progress, "Read document");
+  tasks.interruptedTasks();
+  assert.equal(tasks.getTask(a).status, "interrupted");
+  const b = tasks.createTask("dot", "conversation", "Send after approval");
+  tasks.startTask("dot", b);
+  tasks.finishTask("dot", "waiting");
+  tasks.interruptedTasks();
+  assert.equal(tasks.getTask(b).status, "waiting");
+  const c = tasks.createTask("dot", "conversation", "Queued");
+  tasks.cancelQueued("dot");
+  assert.equal(tasks.getTask(c).status, "cancelled");
+});
+process.on("exit", () => rmSync(dir, { recursive: true, force: true }));

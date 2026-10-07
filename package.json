@@ -1,0 +1,107 @@
+{
+  "name": "codex-open-dot",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1 --port 3100",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1 --port 3100",
+    "lint": "eslint",
+    "desktop:dev": "OPEN_DOT_DEV_URL=http://localhost:3100 electron electron",
+    "desktop:prepare": "next build && node scripts/desktop-prepare.mjs",
+    "desktop": "electron electron",
+    "desktop:build": "pnpm desktop:prepare && electron-builder --mac",
+    "test": "node --import ./scripts/test-loader.mjs --test tests/*.test.mjs",
+    "typecheck": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@composio/core": "0.22.0",
+    "@e2b/desktop": "^2.4.0",
+    "@modelcontextprotocol/sdk": "^1.30.1",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.1",
+    "croner": "^10.0.1",
+    "lucide-react": "^1.48.0",
+    "mammoth": "^1.13.0",
+    "next": "16.3.6",
+    "openai": "^7.23.0",
+    "pdfjs-dist": "^6.4.299",
+    "playwright": "^1.63.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "server-only": "^0.0.1",
+    "three": "^0.186.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/node": "^26.6.3",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.186.0",
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.6",
+    "prettier": "3.6.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@10.33.2",
+  "build": {
+    "appId": "dev.mohammadaqib.codexopendot",
+    "productName": "Codex-open-dot",
+    "electronVersion": "44.4.5",
+    "directories": {
+      "app": "electron",
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "extraResources": [
+      {
+        "from": ".desktop/server",
+        "to": "server"
+      },
+      {
+        "from": "LICENSE.md",
+        "to": "LICENSE.md"
+      },
+      {
+        "from": "ATTRIBUTION.md",
+        "to": "ATTRIBUTION.md"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Codex-open-dot uses the microphone for voice mode."
+      },
+      "identity": "-",
+      "hardenedRuntime": false
+    },
+    "files": [
+      "main.mjs",
+      "package.json",
+      "!**/node_modules/**"
+    ],
+    "npmRebuild": false,
+    "afterPack": "scripts/desktop-after-pack.mjs"
+  },
+  "author": {
+    "name": "Mohammad Aqib"
+  },
+  "description": "Personal AI agents customized by Mohammad Aqib, Full Stack Developer",
+  "license": "SEE LICENSE IN LICENSE.md"
+}
