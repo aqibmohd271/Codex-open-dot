@@ -1,45 +1,105 @@
-# Codex-open-dot
+<p align="center"><img src="build/icon.png" width="96" alt="Codex-open-dot app icon"/></p>
+<h1 align="center">Codex-open-dot</h1>
+<p align="center"><strong>Your models. Your workflows. Your personal AI agents.</strong><br/>A customized macOS agent app by Mohammad Aqib — Full Stack Developer.</p>
+<p align="center">
+  <img alt="macOS Apple Silicon" src="https://img.shields.io/badge/macOS-Apple_Silicon-111827?style=for-the-badge&logo=apple&logoColor=white"/>
+  <img alt="Version 0.2.0" src="https://img.shields.io/badge/version-0.2.0-2563EB?style=for-the-badge"/>
+  <img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"/>
+</p>
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#what-you-can-do">Features</a> ·
+  <a href="#models-and-voice">Models & voice</a> ·
+  <a href="docs/ENHANCEMENTS.md">Documentation</a> ·
+  <a href="#attribution-and-license">License & attribution</a>
+</p>
 
-**Customized and maintained by Mohammad Aqib — Full Stack Developer.**
+---
 
-Codex-open-dot is a personal AI agent app for macOS, based on [Open Dot by Composio Community](https://github.com/composio-community/open-dot), with custom model providers, durable tasks, approval controls, knowledge search and workflows. This repository contains Mohammad Aqib's enhanced edition. Original upstream work remains credited to its authors.
+**Codex-open-dot** brings model connections, task management, knowledge and action approvals into one desktop app. Create agents for different jobs, choose their models, follow their progress and review important actions.
 
-## What is included
+This is **Mohammad Aqib's customized edition** of [Open Dot by Composio Community](https://github.com/composio-community/open-dot). It is an independent project, not an official OpenAI Codex product.
 
-- Custom Chat Completions and Responses providers: endpoint, API key, display name and real model/deployment IDs; encrypted credential storage and connection diagnostics.
-- Durable tasks with explicit recovery, a task dashboard, time-zone-aware schedules and missed-run policies.
-- Model usage accounting, configurable budgets and loop limits, conservative retries and approvals bound to exact actions.
-- PDF/DOCX/text knowledge imports with source references; editable personal, dot and project memory.
-- Model routing, MCP/HTTP tool connections, reusable workflows, browser recovery and command-based quality checks.
-- Bounded specialist handoffs, voice interruption/transcripts, backup/restore, authenticated remote mode, roles and activity history.
+## What you can do
 
-See [implementation details and limits](docs/ENHANCEMENTS.md) and the [verified task checklist](ENHANCEMENT_PLAN.md). Hosted deployment, live provider/voice validation, notarization and an automatic update feed remain separate setup steps.
+| Capability | Included in this edition |
+| :--- | :--- |
+| **Connect your models** | Custom Chat Completions and Responses endpoints, encrypted keys, manual model/deployment IDs and connection tests. |
+| **Follow every task** | Durable task records, progress, results, explicit recovery and a task dashboard. |
+| **Schedule work** | Explicit time zones, missed-run policies and durable dispatch records. |
+| **Control execution** | Model spending estimates and limits, step limits, bounded read retries and exact-action approvals. |
+| **Bring your knowledge** | PDF, DOCX, text and folder imports; keyword search with source references; editable dot, personal and project memories. |
+| **Reuse processes** | Ordered workflows with review gates, model routing and bounded specialist handoffs. |
+| **Extend tools** | Streamable HTTP MCP servers and fixed JSON POST API connections. |
+| **Check results** | Command-based quality checks with recorded evidence; tasks without checks remain labeled unverified. |
+| **Manage your workspace** | Backup/restore, setup diagnostics, authenticated server mode, member roles and activity history. |
 
-## Install on macOS
+For scope, limits and verification evidence, read [the enhancement guide](docs/ENHANCEMENTS.md) and [the implementation checklist](ENHANCEMENT_PLAN.md).
 
-The local Apple Silicon build is `dist/Codex-open-dot-0.2.0-arm64.dmg`. Open the disk image and copy **Codex-open-dot.app** to your Applications folder. This development build is ad-hoc signed, not Apple-notarized. If macOS asks for confirmation, use its normal Open or Privacy & Security flow; do not disable Gatekeeper.
+## Quick start
 
-On Mohammad Aqib's Mac, the app is installed in `~/Applications/Codex-open-dot.app`. Launch it from Finder or Spotlight.
+### Run from source
 
-1. Open **Settings → Setup and diagnostics**.
-2. Add an API provider. Under **Custom API providers**, enter the provider's base URL, authentication mode, key and exact deployed model ID, then use **Test connection**.
-3. Create a dot, choose its model and instructions, and send a first message.
-4. Connect optional app integrations and enable only the permissions that dot needs.
-
-No credentials are bundled. API usage is billed by the selected provider. Microsoft-hosted, DeepSeek-hosted and local models require a compatible Chat Completions or Responses endpoint; arbitrary API protocols are not automatically supported.
-
-The desktop app stores data in `~/Library/Application Support/Codex-open-dot/`. Closing the window keeps work running; quitting or sleeping the Mac interrupts local execution. For a continuous server, see [SERVER.md](docs/SERVER.md).
-
-## Develop from source
-
-Requirements: Node.js 24, pnpm 10.33.2 and Google Chrome (or Playwright Chromium for browser tools).
+Use **Node.js 24**, **pnpm 10.33.2**, and Google Chrome or Playwright Chromium for browser tools.
 
 ```sh
+git clone https://github.com/aqibmohd271/Codex-open-dot.git
+cd Codex-open-dot
 pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open `http://localhost:3100`. Configure credentials in Settings. Development data is stored in `.data/`, which Git ignores. The original `DOTS_*` and `OPEN_DOT_*` environment variable names remain supported for compatibility; see `.env.example`.
+Open **http://localhost:3100**.
+
+1. Go to **Settings → Setup and diagnostics**.
+2. Add an OpenAI, OpenRouter or custom compatible API provider.
+3. Enter the actual model or deployment ID and test the connection.
+4. Create a dot, choose its instructions and model, and send a small first task.
+5. Review its result before enabling schedules or broader tool access.
+
+**No API credentials are included.** Model and external-service usage are billed by their providers. See [.env.example](.env.example) for optional environment settings.
+
+### Build the Mac app
+
+```sh
+pnpm desktop:build
+```
+
+The Apple Silicon installer is generated at:
+
+```text
+dist/Codex-open-dot-0.2.0-arm64.dmg
+```
+
+Open the DMG and copy **Codex-open-dot.app** into Applications. Installers are built locally; this README does not imply a downloadable GitHub release exists.
+
+The current development build is **ad-hoc signed and not Apple-notarized**. Use the normal macOS approval flow when prompted. See [Mac packaging notes](docs/MAC.md).
+
+## Models and voice
+
+| Connection | Agent text/tasks | Voice calls in the current app |
+| :--- | :--- | :--- |
+| Direct OpenAI API | Supported with an available compatible model | Uses OpenAI Realtime; a direct OpenAI key is required. |
+| OpenRouter | Supported with compatible models | Not integrated through OpenRouter yet. |
+| Custom API provider | Chat Completions or Responses, subject to deployment capabilities | Custom-provider voice is not implemented. |
+
+Custom providers let you set a friendly name, base URL, authentication mode and real model/deployment IDs. Compatible Microsoft-hosted, DeepSeek-hosted or local deployments can be used. A model label alone does not establish tool, vision or audio support.
+
+Voice can use OpenAI while the working agent uses another configured model. The proposed DeepSeek/local-speech fallback is **not yet implemented**. Strict model spending enforcement currently disables voice because live audio costs cannot be reserved reliably.
+
+## Data, permissions and runtime
+
+- Desktop data: `~/Library/Application Support/Codex-open-dot/`.
+- Development data: `.data/`, excluded from Git.
+- Saved API credentials are encrypted through the app's vault.
+- Local mode uses a workspace folder; **it is not an operating-system sandbox**.
+- Closing the desktop window keeps the app running; quitting or sleeping the Mac interrupts local work.
+- Continuous off-device operation requires a separately deployed server. A cloud browser alone does not keep the scheduler running.
+- Backups exclude credentials and browser profiles, but chat and document content can still be sensitive.
+
+See [server deployment](docs/SERVER.md) for authentication, HTTPS, persistence and the single-process requirement.
+
+## Development and verification
 
 ```sh
 pnpm test
@@ -48,24 +108,39 @@ pnpm lint
 pnpm desktop:build
 ```
 
-The last command builds the Apple Silicon app and DMG. [MAC.md](docs/MAC.md) explains packaging. The tests use temporary databases and mocked providers; they do not claim to certify every real API or website.
+The 0.2.0 verification run passed **29 automated tests**, lint, production build/type checks and installer integrity checks. Tests cover mocked model requests, approval replay protection, scheduling, MCP, PDF/DOCX extraction, memory, backups, specialist limits, quality checks and mocked voice events.
 
-## Prepare your GitHub repository
+These are recorded local results, not a live CI badge or a guarantee for every deployment. Real provider credentials, live microphone/browser sessions, Docker deployment, notarization and automatic updates require further setup or verification.
 
-Use **Codex-open-dot** as the repository name. Keep the upstream Git history and attribution. The local upstream remote points to the original repository; add your own destination as `origin` when ready. Nothing is uploaded automatically.
+<details>
+<summary><strong>Project structure</strong></summary>
 
-Commit source, documentation and `pnpm-lock.yaml`. Do not commit `.env.local`, `.data/`, credentials, backups, `node_modules/`, `.desktop/` or `dist/`. Build artifacts can be distributed separately after the applicable licensing and release requirements are resolved.
+```text
+electron/           macOS desktop shell
+src/app/            pages, server actions and API routes
+src/components/     task, workflow, settings and chat interfaces
+src/server/agent/   model adapters, agent runtime and tools
+src/server/         persistence, knowledge, budgets, schedules and auth
+tests/              automated tests and browser smoke test
+docs/               setup, operating limits and attribution
+```
 
-## Author and attribution
+</details>
 
-**Mohammad Aqib — Full Stack Developer**
+## Feedback
+
+Found a reproducible problem or have an improvement in mind? [Open an issue](https://github.com/aqibmohd271/Codex-open-dot/issues) with the steps and expected behavior. Remove keys, passwords and private chat content from logs and screenshots.
+
+## Author
+
+**[Mohammad Aqib](https://github.com/aqibmohd271) — Full Stack Developer**
 
 Custom-edition developer and maintainer.
 
-Based on Composio Community's Open Dot. See [ATTRIBUTION.md](ATTRIBUTION.md) for the exact upstream revision and [the original README](docs/UPSTREAM_README.md) for historical context. Its statements describe the upstream app, not necessarily this edition.
+## Attribution and license
 
-This independent project is not an official OpenAI Codex product and is not affiliated with or endorsed by OpenAI or Composio.
+Based on **Composio Community's Open Dot**, imported at revision `f838e17cf5c3a88ade5ceea54680a8145d048c1d`. See [ATTRIBUTION.md](ATTRIBUTION.md) and [the original upstream README](docs/UPSTREAM_README.md).
 
-## License
+[LICENSE.md](LICENSE.md) applies MIT terms **only to original contributions by Mohammad Aqib**, to the extent he holds those rights. No license file was found in the imported upstream revision or the repository checked on 2026-10-04. This does not make the combined project wholly MIT-licensed; upstream permissions remain unresolved. Third-party dependencies and assets retain their own licenses.
 
-[LICENSE.md](LICENSE.md) applies MIT terms only to original contributions by Mohammad Aqib, to the extent he holds the relevant rights. No upstream license file was found in the imported revision or the repository checked on 2026-10-04. Upstream code and third-party dependencies are not relicensed by this file. Customization and renaming do not make the entire upstream codebase exclusively ours; confirm upstream permissions before redistributing the combined project as a separately licensed release.
+This project is not affiliated with or endorsed by OpenAI or Composio.
